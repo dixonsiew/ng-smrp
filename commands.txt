@@ -1,0 +1,6 @@
+  
+ng build --prod --base-href https://wfsiew.github.io/smrp/ --output-path docs
+
+ng build --prod --base-href /smrp/
+
+https://shermandigital.com/blog/fix-404-errors-from-angular-projects-hosted-on-github-pages/

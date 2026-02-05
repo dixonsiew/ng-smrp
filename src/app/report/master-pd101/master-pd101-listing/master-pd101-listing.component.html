@@ -1,0 +1,117 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-12">
+        <h1 class="m-0 text-dark">{{ title }} Listing</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-3 col-12 p-1">
+            <div class="input-group date">
+              <input type="text" class="form-control" [placeholder]="placeholderdateFrom"name="dateFrom" [(ngModel)]="dateFrom" 
+                bsDatepicker #dp1="bsDatepicker"
+                [bsConfig]="{ containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-default" (click)="dp1.show()" [attr.aria-expanded]="dp1.isOpen">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3 col-12 p-1">
+            <div class="input-group date">
+              <input type="text" class="form-control" [placeholder]="placeholderdateTo" name="dateTo" [(ngModel)]="dateTo" 
+                bsDatepicker #dp2="bsDatepicker"
+                [bsConfig]="{ containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-default" (click)="dp2.show()" [attr.aria-expanded]="dp2.isOpen">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1 col-12 p-1">
+            <div class="btn-group" dropdown>
+              <button type="button" class="btn btn-default" (click)="onClearFilter()">Clear</button>
+              <button id="button-split" type="button" dropdownToggle class="btn btn-default dropdown-toggle dropdown-toggle-split"
+                aria-controls="dropdown-split">
+                <span class="caret"></span>
+                <span class="sr-only">Split button!</span>
+              </button>
+              <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+                  role="menu" aria-labelledby="button-split">
+                <li role="menuitem"><a class="dropdown-item" href="#" (click)="onToday()">Today</a></li>
+                <li role="menuitem"><a class="dropdown-item" href="#" (click)="onYesterday()">Yesterday</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-sm-5 col-12 p-1 text-right">
+            <button type="button" class="btn btn-primary mr-2" (click)="onApplyFilter()" [disabled]="dateFrom == null || dateTo == null">Apply</button>
+            <button type="button" class="btn btn-primary mr-2" (click)="onExport()" [disabled]="isEmpty(list)">JSON File</button>
+            <button type="button" class="btn btn-primary" (click)="onExportXlsx()" [disabled]="isEmpty(list)">Xlsx File</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        @if (isEmpty(list) && !isLoading) {
+        <div class="text-center">
+          <h4>No records found</h4>
+        </div>
+        }
+
+        @if (!isEmpty(list) && !isLoading) {
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-sm">
+            <thead>
+              <tr>
+                <th></th>
+                @for (c of columnmaps; track $index) {
+                <ng-container>
+                  <th class="text-nowrap">{{ c.text }}</th>
+                </ng-container>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (o of list; track $index) {
+              <tr>
+                <td class="text-nowrap">
+                  <button type="button" class="btn btn-sm btn-primary" (click)="onEdit(o)"><i class="fas fa-pencil-alt"></i></button>
+                </td>
+                @for (c of columnmaps; track $index) {
+                <ng-container>
+                  <td class="text-nowrap">{{ o[c.field] }}</td>
+                </ng-container>
+                }
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        }
+      </div>
+      @if (totalCount) {
+      <div class="card-footer" [ngClass]="{'d-none': isLoading}">
+        <div class="float-left pg-label">
+          Page {{ page }} / {{ totalPage }} of {{ totalCount }} record(s)
+        </div>
+        <div class="float-right">
+          <pagination 
+            [totalItems]="totalCount" 
+            [itemsPerPage]="pageSize" 
+            [maxSize]="MAX_PAGE_NUMBERS" 
+            [(ngModel)]="page" 
+            (pageChanged)="pageChanged($event)"></pagination>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

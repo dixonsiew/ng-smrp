@@ -1,0 +1,649 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-12">
+        <h1 class="m-0 text-dark">Edit {{ title }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="content">
+  @if (!isLoading) {
+  <div class="container-fluid">
+    <form class="form-horizontal" [formGroup]="mform" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Visit</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">ACCOUNT NO</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="ACCOUNT NO" name="ACCOUNT_NO" formControlName="ACCOUNT_NO" readonly
+                    [ngClass]="{'is-invalid': invalid('ACCOUNT_NO')}">
+                  @if (invalid('ACCOUNT_NO') && f['ACCOUNT_NO'].hasError('required')) {
+                  <small class="badge badge-danger">
+                    ACCOUNT NO is required
+                  </small>
+                  }
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">PRN</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="PRN" name="PRN" formControlName="PRN" readonly
+                    [ngClass]="{'is-invalid': invalid('PRN')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">REG DATE</label>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="REG DATE" name="REGISTRATION_DATE" formControlName="REGISTRATION_DATE" readonly
+                      [ngClass]="{'is-invalid': invalid('REGISTRATION_DATE')}">
+                    <!-- <input type="text" class="form-control" formControlName="REGISTRATION_DATE" name="REGISTRATION_DATE" bsDatepicker #REGISTRATION_DATE="bsDatepicker"
+                      [bsConfig]="{ containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" (click)="REGISTRATION_DATE.show()" [attr.aria-expanded]="REGISTRATION_DATE.isOpen">
+                        <i class="fa fa-calendar-alt"></i>
+                      </button>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">REG TIME</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" placeholder="REG TIME" name="REGISTRATION_TIME" formControlName="REGISTRATION_TIME" readonly
+                    [ngClass]="{'is-invalid': invalid('REGISTRATION_TIME')}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Patient</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">TITLE</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="titleList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="TITLE" 
+                    name="TITLE"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NAME</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NAME" name="PATIENT_NAME" formControlName="PATIENT_NAME"
+                    [ngClass]="{'is-invalid': invalid('PATIENT_NAME')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">GENDER</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="genderList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="GENDER" 
+                    name="GENDER"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">DOB</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="DOB" name="DOB" bsDatepicker #DOB="bsDatepicker"
+                      [bsConfig]="{ containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" (click)="DOB.show()" [attr.aria-expanded]="DOB.isOpen">
+                        <i class="fa fa-calendar-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">MARITAL STATUS</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="maritalstatusList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="MARITAL_STATUS" 
+                    name="MARITAL_STATUS"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">RELIGION</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="religionList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="RELIGION" 
+                    name="RELIGION"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NATIONALITY</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="countryList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="NATIONALITY" 
+                    name="NATIONALITY"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">ETHNIC GROUP</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="ethnicgroupList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="ETHNIC_GROUP" 
+                    name="ETHNIC_GROUP"></ng-select>
+                </div>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="col-sm-3 col-form-label">OCCUPATION</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="occupationList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="OCCUPATION" 
+                    name="OCCUPATION"></ng-select>
+                </div>
+              </div> -->
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">HEIGHT</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="HEIGHT" name="HEIGHT" formControlName="HEIGHT"
+                    [ngClass]="{'is-invalid': invalid('HEIGHT')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">WEIGHT</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="WEIGHT" name="WEIGHT" formControlName="WEIGHT"
+                    [ngClass]="{'is-invalid': invalid('WEIGHT')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">COUNTRY OF BIRTH</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="countryList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="COUNTRY_OF_BIRTH" 
+                    name="COUNTRY_OF_BIRTH"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">PATIENT CATEGORY</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="personcategorycodeList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="REFPERSONCATEGORYCODE" 
+                    name="REFPERSONCATEGORYCODE"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">DOC TYPE</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="idtypeList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="DOCUMENT_TYPE" 
+                    name="DOCUMENT_TYPE"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">DOC NO</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="DOC NO" name="DOCUMENT_NUMBER" formControlName="DOCUMENT_NUMBER"
+                    [ngClass]="{'is-invalid': invalid('DOCUMENT_NUMBER')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">HOME PHONE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="HOME PHONE" name="HOME_PHONE" formControlName="HOME_PHONE"
+                    [ngClass]="{'is-invalid': invalid('HOME_PHONE')}">
+                </div>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="col-sm-3 col-form-label">REFFOREIGNRCOUNTRYCODE</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="countryList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="REFFOREIGNRCOUNTRYCODE" 
+                    name="REFFOREIGNRCOUNTRYCODE"></ng-select>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Patient Address</h5>
+            </div>
+            <div class="card-body">
+              <!-- <div class="form-group row">
+                <label class="col-sm-2 col-form-label">HOME_ADDRESS</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" placeholder="HOME_ADDRESS" name="HOME_ADDRESS" formControlName="HOME_ADDRESS"
+                    [ngClass]="{'is-invalid': invalid('HOME_ADDRESS')}">
+                </div>
+              </div> -->
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STREET1</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="STREET1" name="STREET1" formControlName="STREET1"
+                    [ngClass]="{'is-invalid': invalid('STREET1')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STREET2</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="STREET2" name="STREET2" formControlName="STREET2"
+                    [ngClass]="{'is-invalid': invalid('STREET2')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STREET3</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="cityList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="CITYCODE" 
+                    name="CITYCODE"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">POSTCODE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="POSTCODE" name="POSTCODE" formControlName="POSTCODE"
+                    [ngClass]="{'is-invalid': invalid('POSTCODE')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STATE</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="stateList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="OCITY" 
+                    name="OCITY"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">COUNTRY</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="countryList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="NATIONALITY" 
+                    name="NATIONALITY"></ng-select>
+                </div>
+              </div>
+              
+              <!-- <div class="form-group row">
+                <label class="col-sm-3 col-form-label">MOBILE_PHONE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="MOBILE_PHONE" name="MOBILE_PHONE" formControlName="MOBILE_PHONE"
+                    [ngClass]="{'is-invalid': invalid('MOBILE_PHONE')}">
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Next of Kin</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">RELATIONSHIP</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="relationshipList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="RELATION_DESCRIPTION" 
+                    name="RELATION_DESCRIPTION"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK TITLE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NOK TITLE" name="NOK_TITLE" formControlName="NOK_TITLE"
+                    [ngClass]="{'is-invalid': invalid('NOK_TITLE')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK NAME</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NOK NAME" name="PATIENT_NOK_NAME" formControlName="PATIENT_NOK_NAME"
+                    [ngClass]="{'is-invalid': invalid('PATIENT_NOK_NAME')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK DOC TYPE</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="idtypeList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="NOK_ID_TYPE" 
+                    name="NOK_ID_TYPE"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK DOC NO</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NOK DOC NO" name="NOK_ID" formControlName="NOK_ID"
+                    [ngClass]="{'is-invalid': invalid('NOK_ID')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK MOBILE NO</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NOK MOBILE NO" name="NOK_MOBILE_PHONE" formControlName="NOK_MOBILE_PHONE"
+                    [ngClass]="{'is-invalid': invalid('NOK_MOBILE_PHONE')}">
+                </div>
+              </div>
+
+              <!-- <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK_HOME_PHONE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NOK_HOME_PHONE" name="NOK_HOME_PHONE" formControlName="NOK_HOME_PHONE"
+                   [ngClass]="{'is-invalid': invalid('NOK_HOME_PHONE')}">
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Next of Kin Address</h5>
+            </div>
+            <div class="card-body">
+              <!-- <div class="form-group row">
+                <label class="col-sm-3 col-form-label">NOK_HOME_ADDRESS</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="NOK_HOME_ADDRESS" name="NOK_HOME_ADDRESS" formControlName="NOK_HOME_ADDRESS"
+                    [ngClass]="{'is-invalid': invalid('NOK_HOME_ADDRESS')}">
+                </div>
+              </div> -->
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STREET1</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="STREET1" name="NOK_STREET1" formControlName="NOK_STREET1"
+                    [ngClass]="{'is-invalid': invalid('NOK_STREET1')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STREET2</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="STREET2" name="NOK_STREET2" formControlName="NOK_STREET2"
+                    [ngClass]="{'is-invalid': invalid('NOK_STREET2')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STREET3</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="cityList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="NOK_CITYCODE" 
+                    name="NOK_CITYCODE"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">POSTCODE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="POSTCODE" name="NOK_POSTCODE" formControlName="NOK_POSTCODE"
+                    [ngClass]="{'is-invalid': invalid('NOK_POSTCODE')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">STATE</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="stateList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="NOK_OCITY" 
+                    name="NOK_OCITY"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">COUNTRY</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="countryList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="NOK_NATIONALITY" 
+                    name="NOK_NATIONALITY"></ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Admission</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">ADMISSION DATE</label>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="ADMISSION_DATE" name="ADMISSION_DATE" bsDatepicker #ADMISSION_DATE="bsDatepicker"
+                      [bsConfig]="{ containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" (click)="ADMISSION_DATE.show()" [attr.aria-expanded]="ADMISSION_DATE.isOpen">
+                        <i class="fa fa-calendar-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">ADMISSION TIME</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" placeholder="ADMISSION TIME" name="ADMISSION_TIME" formControlName="ADMISSION_TIME"
+                    [ngClass]="{'is-invalid': invalid('ADMISSION_TIME')}">
+                </div>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="col-sm-3 col-form-label">ADMISSION_STATUS</label>
+                <div class="col-sm-9">
+                  <ng-select 
+                    [items]="admstatusList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="ADMISSION_STATUS" 
+                    name="ADMISSION_STATUS"></ng-select>
+                </div>
+              </div> -->
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">WARD NO</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="WARD NO" name="WARD_NO" formControlName="WARD_NO"
+                    [ngClass]="{'is-invalid': invalid('WARD_NO')}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">PRIMARY SPECIALITY</label>
+                <div class="col-sm-10">
+                  <ng-select 
+                    [items]="specialityList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="PRIMARY_SPECIALTY" 
+                    name="PRIMARY_SPECIALTY"></ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">PAYMENT CLASS</label>
+                <div class="col-sm-10">
+                  <ng-select 
+                    [items]="wardclsList" 
+                    bindLabel="desc" 
+                    bindValue="desc" 
+                    placeholder="Please select"
+                    formControlName="PAYMENT_CLASS_CODE" 
+                    name="PAYMENT_CLASS_CODE"></ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-row card-primary">
+            <div class="card-header">
+              <h5 class="card-title m-0">Death</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">DEATH DATE</label>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="DEATH_DATE" name="DEATH_DATE" bsDatepicker #DEATH_DATE="bsDatepicker"
+                      [bsConfig]="{ containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" (click)="DEATH_DATE.show()" [attr.aria-expanded]="DEATH_DATE.isOpen">
+                        <i class="fa fa-calendar-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="button" class="btn btn-outline-dark mr-2" (click)="onBack()"><i class="fas fa-chevron-circle-left"></i> Back</button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="card">
+        <div class="card-body">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">CHARGE_CATEGORY_CODE</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="CHARGE_CATEGORY_CODE" name="CHARGE_CATEGORY_CODE" formControlName="CHARGE_CATEGORY_CODE"
+                [ngClass]="{'is-invalid': invalid('CHARGE_CATEGORY_CODE')}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">DISCHARGEOFFICERS</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="DISCHARGEOFFICERS" name="DISCHARGEOFFICERS" formControlName="DISCHARGEOFFICERS"
+                [ngClass]="{'is-invalid': invalid('DISCHARGEOFFICERS')}">
+            </div>
+            <label class="col-sm-2 col-form-label">DISCHARGE_DATE</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="DISCHARGE_DATE" name="DISCHARGE_DATE" formControlName="DISCHARGE_DATE"
+                [ngClass]="{'is-invalid': invalid('DISCHARGE_DATE')}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">DISCHARGE_DOCTOR</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="DISCHARGE_DOCTOR" name="DISCHARGE_DOCTOR" formControlName="DISCHARGE_DOCTOR"
+                [ngClass]="{'is-invalid': invalid('DISCHARGE_DOCTOR')}">
+            </div>
+            <label class="col-sm-2 col-form-label">DISCHARGE_REASON</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="DISCHARGE_REASON" name="DISCHARGE_REASON" formControlName="DISCHARGE_REASON"
+                [ngClass]="{'is-invalid': invalid('DISCHARGE_REASON')}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">DISCHARGE_TIME</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="DISCHARGE_TIME" name="DISCHARGE_TIME" formControlName="DISCHARGE_TIME"
+                [ngClass]="{'is-invalid': invalid('DISCHARGE_TIME')}">
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">MCR_NO</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="MCR_NO" name="MCR_NO" formControlName="MCR_NO"
+                [ngClass]="{'is-invalid': invalid('MCR_NO')}">
+            </div>
+            
+          </div>
+        </div>
+      </div> -->
+    </form>
+  </div>
+  }
+</section>

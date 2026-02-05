@@ -1,0 +1,50 @@
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+
+@Component({
+  standalone: false,
+  selector: 'app-sort-column',
+  templateUrl: './sort-column.component.html',
+  styleUrls: ['./sort-column.component.scss']
+})
+export class SortColumnComponent implements OnInit {
+
+  @Input()
+  name!: string;
+  @Input()
+  sort!: string;
+  @Input()
+  dir!: string;
+  @Input()
+  current!: string;
+
+  @Output() onSortBy: EventEmitter<any> = new EventEmitter();
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  onSort() {
+    if (this.current !== this.sort) {
+      this.dir = 'asc';
+      this.current = this.sort;
+    }
+
+    else {
+      this.dir = this.dir === 'asc' ? 'desc' : 'asc';
+      if (this.dir === 'asc') {
+        this.current = this.sort;
+      }
+    }
+
+    this.onSortBy.emit({ sort: this.current, dir: this.dir });
+  }
+
+  isSortBy(dir: any) {
+    return this.sort === this.current && this.dir === dir;
+  }
+
+  get isCurrentSort() {
+    return this.sort === this.current;
+  }
+}

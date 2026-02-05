@@ -1,0 +1,88 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-12">
+        <h1 class="m-0 text-dark">User Listing</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-6 col-12 p-1">
+            <app-search-input [search]="search" (onSearch)="onSearch($event)"></app-search-input>
+          </div>
+          <div class="col-sm-6 col-12 p-1 text-right">
+            <button type="button" class="btn btn-primary" (click)="goto('create')"><i class="fas fa-plus"></i> Add New</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        @if (isEmpty(list) && !isLoading) {
+        <div class="text-center">
+          <h4>No records found</h4>
+        </div>
+        }
+
+        @if (!isEmpty(list) && !isLoading) {
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-sm">
+            <thead>
+              <tr>
+                <th>
+                  <app-sort-column [name]="'Username'" [sort]="'username'" [dir]="sortDir" [current]="sort"
+                    (onSortBy)="onSortBy($event)"></app-sort-column>
+                </th>
+                <th>
+                  <app-sort-column [name]="'First name'" [sort]="'first_name'" [dir]="sortDir" [current]="sort"
+                    (onSortBy)="onSortBy($event)"></app-sort-column>
+                </th>
+                <th>
+                  <app-sort-column [name]="'Last name'" [sort]="'last_name'" [dir]="sortDir" [current]="sort"
+                    (onSortBy)="onSortBy($event)"></app-sort-column>
+                </th>
+                <th>
+                  <app-sort-column [name]="'Last Login'" [sort]="'last_login'" [dir]="sortDir" [current]="sort"
+                    (onSortBy)="onSortBy($event)"></app-sort-column>
+                </th>
+                <th>Role</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (o of list; track $index) {
+              <tr>
+                <td>{{ o.username }}</td>
+                <td>{{ o.first_name }}</td>
+                <td>{{ o.last_name }}</td>
+                <td>{{ o.last_login | date : 'yyyy-MM-dd hh:mm:ss a' }}</td>
+                <td>{{ getUserRoles(o) }}</td>
+                <td class="text-nowrap">
+                  <button type="button" class="btn btn-sm btn-primary mr-2" (click)="onEdit(o)"><i class="fas fa-pencil-alt"></i></button>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="onDelete(o)"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        }
+      </div>
+      @if (totalCount) {
+      <div class="card-footer" [ngClass]="{'d-none': isLoading}">
+        <div class="float-right">
+          <pagination 
+            [totalItems]="totalCount" 
+            [itemsPerPage]="pageSize" 
+            [maxSize]="MAX_PAGE_NUMBERS" 
+            [(ngModel)]="page" 
+            (pageChanged)="pageChanged($event)"></pagination>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

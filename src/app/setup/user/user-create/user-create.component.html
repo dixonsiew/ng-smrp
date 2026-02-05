@@ -1,0 +1,114 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-12">
+        <h1 class="m-0 text-dark">Add / Edit User</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="content">
+  @if (!isLoading) {
+  <div class="container-fluid">
+    <form class="form-horizontal" [formGroup]="mform" (ngSubmit)="onSubmit()">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username&nbsp;<span class="text-danger">*</span></label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Username" name="username" formControlName="username" [readonly]="isEdit"
+                [ngClass]="{'is-invalid': invalid('username')}">
+              @if (invalid('username') && f['username'].hasError('required')) {
+              <small class="badge badge-danger">
+                Username is required
+              </small>
+              }
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Password&nbsp;<span class="text-danger">*</span></label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Password" name="password" formControlName="password"
+                [ngClass]="{'is-invalid': invalid('password')}">
+              @if (invalid('password') && f['password'].hasError('required')) {
+              <small class="badge badge-danger">
+                Password is required
+              </small>
+              }
+              @if (invalid('password') && f['password'].hasError('minlength')) {
+              <small class="badge badge-danger">
+                Password should be between 6 to 8 characters in length
+              </small>
+              }
+              @if (invalid('password') && f['password'].hasError('maxlength')) {
+              <small class="badge badge-danger">
+                Password should be between 6 to 8 characters in length
+              </small>
+              }
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Email" name="email" formControlName="email"
+                [ngClass]="{'is-invalid': invalid('email')}">
+              <small class="badge badge-danger" 
+                *ngIf="invalid('email') && f.email.hasError('email')">
+                Email is invalid
+              </small>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">First name&nbsp;<span class="text-danger">*</span></label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="First name" name="first_name" formControlName="first_name"
+              [ngClass]="{'is-invalid': invalid('first_name')}">
+              @if (invalid('first_name') && f['first_name'].hasError('required')) {
+              <small class="badge badge-danger">
+                First name is required
+              </small>
+              }
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Last name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Last name" name="last_name" formControlName="last_name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Role&nbsp;<span class="text-danger">*</span></label>
+            <div class="col-sm-10">
+              @if (lockRole) {
+              <ng-container>
+                <input type="text" class="form-control" readonly [value]="role">
+              </ng-container>
+              }
+              @if (!lockRole) {
+              <ng-container>
+                <ng-select 
+                  [items]="roleList" 
+                  bindLabel="name" 
+                  bindValue="id" 
+                  placeholder="Please select"
+                  formControlName="role_id" 
+                  name="role_id"></ng-select>
+                @if (invalid('role_id') && f['role_id'].hasError('required')) {
+                <small class="badge badge-danger">
+                  Role is required
+                </small>
+                }
+              </ng-container>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-outline-dark mr-2" (click)="onBack()"><i class="fas fa-chevron-circle-left"></i> Back</button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  }
+</section>
