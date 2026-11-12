@@ -8,10 +8,8 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve
-FROM nginxinc/nginx-unprivileged:alpine AS runner
-USER nginx
+FROM nginx:alpine
+COPY --from=builder /app/dist/ng-smrp/browser /usr/share/nginx/html/smrp
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --chown=nginx:nginx --from=builder /app/dist/*/browser /usr/share/nginx/html
 EXPOSE 8080
-ENTRYPOINT ["nginx", "-c", "/etc/nginx/nginx.conf"]
-CMD ["-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
