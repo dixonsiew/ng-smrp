@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ng-container
-        image: wfsiew888/ng-smrp:1.9
+        image: wfsiew888/ng-smrp:1.11
         ports:
         - containerPort: 8080
 ---
