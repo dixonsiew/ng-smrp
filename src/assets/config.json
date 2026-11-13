@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:8300/smrp",
+  "baseUrl": "http://localhost:8200/smrp",
   "logo": "logo-0.png",
   "loginTitle": "Nova MSC - Development"
 }
