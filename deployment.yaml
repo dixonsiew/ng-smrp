@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
       - name: ng-container
-        image: wfsiew888/ng-smrp:1.11
+        image: wfsiew888/ng-smrp:1.0.0
         ports:
         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ng-smrp-service
+  name: ng-smrp
 spec:
   type: NodePort
   selector:

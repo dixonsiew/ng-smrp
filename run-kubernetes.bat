@@ -1,1 +1,1 @@
-kubectl port-forward service/ng-smrp-service 8080:8080 --address="0.0.0.0"
+kubectl port-forward service/ng-smrp 8080:8080 --address="0.0.0.0"
