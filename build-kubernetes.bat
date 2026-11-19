@@ -1,8 +1,95 @@
-kubectl delete service ng-smrp
-kubectl delete deployment ng-smrp
+@echo off
+setlocal EnableDelayedExpansion
 
-docker build --no-cache -t docker.io/wfsiew888/ng-smrp:1.0.0  .
+REM ============================================
+REM Configuration
+REM ============================================
+set IMAGE_NAME=docker.io/wfsiew888/ng-smrp
+set IMAGE_TAG=1.0.0
+set FULL_IMAGE=%IMAGE_NAME%:%IMAGE_TAG%
+set SERVICE_NAME=ng-smrp
+set DEPLOYMENT_NAME=ng-smrp
+set DEPLOY_FILE=deployment.yaml
 
-docker push docker.io/wfsiew888/ng-smrp:1.0.0
+echo ============================================
+echo  Starting deployment of %SERVICE_NAME%
+echo ============================================
+echo.
 
-kubectl apply -f deployment.yaml
+REM ============================================
+REM Step 1: Delete Service
+REM ============================================
+echo [1/5] Deleting service %SERVICE_NAME%...
+kubectl delete service %SERVICE_NAME% --ignore-not-found=true
+if errorlevel 1 (
+    echo [WARN] Failed to delete service. Continuing...
+)
+
+REM ============================================
+REM Step 2: Delete Deployment
+REM ============================================
+echo.
+echo [2/5] Deleting deployment %DEPLOYMENT_NAME%...
+kubectl delete deployment %DEPLOYMENT_NAME% --ignore-not-found=true
+if errorlevel 1 (
+    echo [WARN] Failed to delete deployment. Continuing...
+)
+
+REM ============================================
+REM Step 3: Build Docker Image (no cache)
+REM ============================================
+echo.
+echo [3/5] Building Docker image %FULL_IMAGE% (no cache)...
+docker build --no-cache -t %FULL_IMAGE% .
+if errorlevel 1 (
+    echo [ERROR] Docker build failed. Aborting.
+    exit /b 1
+)
+
+REM ============================================
+REM Step 4: Push Docker Image
+REM ============================================
+echo.
+echo [4/5] Pushing Docker image to registry...
+docker push %FULL_IMAGE%
+if errorlevel 1 (
+    echo [ERROR] Docker push failed. Aborting.
+    exit /b 1
+)
+
+REM ============================================
+REM Step 5: Apply Deployment
+REM ============================================
+echo.
+echo [5/5] Applying %DEPLOY_FILE%...
+kubectl apply -f %DEPLOY_FILE%
+if errorlevel 1 (
+    echo [ERROR] kubectl apply failed.
+    exit /b 1
+)
+
+REM ============================================
+REM Restart Deployment to Pick Up New Image
+REM ============================================
+echo.
+echo Restarting deployment to use freshly pushed image...
+kubectl rollout restart deployment/%DEPLOYMENT_NAME%
+if errorlevel 1 (
+    echo [WARN] Rollout restart failed. You may need to manually delete pods.
+) else (
+    echo [OK] Rollout restarted.
+)
+
+echo.
+echo Waiting for rollout to complete...
+kubectl rollout status deployment/%DEPLOYMENT_NAME% --timeout=180s
+if errorlevel 1 (
+    echo [WARN] Rollout did not complete within timeout. Check pod status.
+)
+
+echo.
+echo ============================================
+echo  Deployment completed!
+echo ============================================
+endlocal
+exit /b 0
